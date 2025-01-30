@@ -1,5 +1,7 @@
 import requests
 import mysql.connector
+
+
 from datetime import datetime
 
 # Alpha Vantage API key
@@ -26,21 +28,63 @@ def fetch_stock_data(symbol):
 # Function to store stock data in MySQL database
 def store_stock_data(symbol, data):
     # Connect to MySQL database
-    connection = mysql.connector.connect(
-        host='localhost',
-        user='root',             
-        password='Kamble@123', 
-        database='stock_market'
-    )
-    cursor = connection.cursor()
+    # connection = mysql.connector.connect(
+    #     host='localhost',
+    #     user='root',             
+    #     password='Kamble@123', 
+    #     database='stock_market'
+    # )
+    # cursor = connection.cursor()
+#-----------------------------------------------
+# 
+# 
+        connection = mysql.connector.connect(
+            host='localhost',
+            user='root',
+            password="Aher@123",
+            auth_plugin='mysql_native_password'
+    # database="Stock_data"  # Optional: Uncomment if the database exists
+)
+
+        cursor = connection.cursor()
+
+# Create the database
+        cursor.execute('CREATE DATABASE IF NOT EXISTS Stock_data')
+
+# Show databases
+# cursor.execute('SHOW DATABASES')
+# for db in cursor.fetchall():
+#     print(db)
+
+# Use the database
+        cursor.execute("USE Stock_data")
+
+
+
+#-________________________________________________________
+
+
+
+
+    # connection = mysql.connector.connect(
+    #     host='localhost',
+    #     user='root',
+    #     password="Aher@123",
+    #     auth_plugin='mysql_native_password'
+    #     # database="Stock_data"
+    # )
+    # cursor = connection.cursor()
+    # cursor.execute('Create Databases Stock_data')
+    # cursor.execute('Show Databases')
+    # cursor.execute("use Stock_data")
 
     # Prepare and execute the insert query for each record
-    for date, values in data.items():
-        open_price = float(values['1. open'])
-        high_price = float(values['2. high'])
-        low_price = float(values['3. low'])
-        close_price = float(values['4. close'])
-        volume = int(values['5. volume'])
+        for date, values in data.items():
+            open_price = float(values['1. open'])
+            high_price = float(values['2. high'])
+            low_price = float(values['3. low'])
+            close_price = float(values['4. close'])
+            volume = int(values['5. volume'])
 
         # Insert data into the stock_data table
         query = """
@@ -50,13 +94,13 @@ def store_stock_data(symbol, data):
         cursor.execute(query, (symbol, date, open_price, high_price, low_price, close_price, volume))
 
     # Commit and close connection
-    connection.commit()
-    cursor.close()
-    connection.close()
+        connection.commit()
+        cursor.close()
+        connection.close()
 
 # Main function to fetch and store data
 def main():
-    symbol = 'HDFCBANK'  
+    symbol = 'GOOG'  
     stock_data = fetch_stock_data(symbol)
 
     if stock_data:
