@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stock Prediction App</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Stock Prediction App</h1>
+        <form action="/predict" method="post">
+            <input type="text" name="symbol" placeholder="Enter Stock Symbol (e.g., AAPL)" required>
+            <button type="submit">Predict</button>
+        </form>
+
+        <form action="/" method="post">
+            <input type="text" name="symbol" placeholder="Suggestion box" required>
+        </form>
+        <div class="container-radio">
+            <h2>Choose an Indicator to Get ML Prediction</h2>
+    
+            <!-- Radio buttons for selecting indicators -->
+            <div class="radio-container">
+                <div>
+                    <input type="radio" id="rsi" name="indicator" value="RSI">
+                    <label for="rsi">RSI (Relative Strength Index)</label>
+                </div>
+                <div>
+                    <input type="radio" id="macd" name="indicator" value="MACD">
+                    <label for="macd">MACD (Moving Average Convergence Divergence)</label>
+                </div>
+                <div>
+                    <input type="radio" id="sma" name="indicator" value="SMA">
+                    <label for="sma">SMA (Simple Moving Average)</label>
+                </div>
+            </div>
+    
+            <!-- Button to trigger the prediction -->
+            <button class="btn" onclick="getPrediction()">Get Prediction</button>
+    
+            <!-- Area to show the result -->
+            <div class="result" id="result"></div>
+        </div>
+    
+        </div>
+
+      
+
+
+        </div>
+        <div class="container-1">
+        <div></div>
+    </div>
+
+    <script>
+        function getPrediction() {
+            // Get the selected indicator
+            const selectedIndicator = document.querySelector('input[name="indicator"]:checked');
+
+            // Check if an indicator is selected
+            if (selectedIndicator) {
+                const indicator = selectedIndicator.value;
+                let predictionResult = '';
+
+                // Call the appropriate function based on the selected indicator
+                switch(indicator) {
+                    case 'RSI':
+                        predictionResult = getRSIPrediction();
+                        break;
+                    case 'MACD':
+                        predictionResult = getMACDPrediction();
+                        break;
+                    case 'SMA':
+                        predictionResult = getSMAPrediction();
+                        break;
+                    default:
+                        predictionResult = "Please select an indicator.";
+                        break;
+                }
+
+                // Display the result
+                document.getElementById('result').textContent = predictionResult;
+            } else {
+                document.getElementById('result').textContent = "Please select an indicator.";
+            }
+        }
+
+        // Simulated ML prediction for RSI
+        function getRSIPrediction() {
+            // This is where you would call your ML model for RSI prediction.
+            return "RSI Prediction: The stock is currently oversold, consider buying.";
+        }
+
+        // Simulated ML prediction for MACD
+        function getMACDPrediction() {
+            // This is where you would call your ML model for MACD prediction.
+            return "MACD Prediction: The MACD has crossed above the signal line, consider buying.";
+        }
+
+        // Simulated ML prediction for SMA
+        function getSMAPrediction() {
+            // This is where you would call your ML model for SMA prediction.
+            return "SMA Prediction: The 50-day SMA is above the 200-day SMA, indicating a strong uptrend.";
+        }
+    </script>
+</body>
+</html>
